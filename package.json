@@ -29,7 +29,7 @@
     "standard": "^10.0.3"
   },
   "scripts": {
-    "start": "SET NODE_ENV=dev && node app.js",
+    "start": "set NODE_ENV=dev && node app.js",
     "test": "mocha --timeout 10000"
   },
   "repository": "",
