@@ -25,12 +25,12 @@ app.set('view engine', 'jade')
 app.use(favicon((path.join(__dirname, '/public/favicon.ico'))))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
-  extended: true
+    extended: true
 }))
 app.use(cookieParser())
 
-app.use('development', function () {
-  app.use(express.errorHandler())
+app.use('development', function() {
+    app.use(express.errorHandler())
 })
 
 // setting up the routes
@@ -47,62 +47,61 @@ winston.addColors(winston.config.npm.colors)
 const logDir = config.logDir
 if (!fs.existsSync(logDir)) {
     // Create the directory if it does not exist
-  fs.mkdirSync(logDir)
+    fs.mkdirSync(logDir)
 }
-logger = new (winston.Logger)({
-  transports: [
-    new winston.transports.Console({
-      colorize: true
-    }),
-    new winston.transports.File({
-      level: app.get('env') === 'development' ? 'debug' : 'info',
-      filename: logDir + '/logs.log',
-      maxsize: 1024 * 1024 * 10 // 10MB
-    })
-  ],
-  exceptionHandlers: [
-    new winston.transports.File({
-      filename: 'log/exceptions.log'
-    })
-  ]
+logger = new(winston.Logger)({
+    transports: [
+        new winston.transports.Console({
+            colorize: true
+        }),
+        new winston.transports.File({
+            level: app.get('env') === 'development' ? 'debug' : 'info',
+            filename: logDir + '/logs.log',
+            maxsize: 1024 * 1024 * 10 // 10MB
+        })
+    ],
+    exceptionHandlers: [
+        new winston.transports.File({
+            filename: 'log/exceptions.log'
+        })
+    ]
 })
 
 // catch 404 and forwarding to error handler
-app.use(function (req, res, next) {
-  var err = new Error('NOT FOUND')
-  err.status = 404
-  logger.error('Route not defined')
-  logger.error(req.url)
+app.use(function(req, res, next) {
+    var err = new Error('NOT FOUND')
+    err.status = 404
+    logger.error('Route not defined')
+    logger.error(req.url)
     // next(err);
-  return res.redirect('/') // redirects to home page in case of a 404
+    return res.redirect('/') // redirects to home page in case of a 404
 })
 
 // server starts here
-const server = http.createServer(app)
-server.listen(config.port, config.server_address, function () {
-  logger.info('server is started at ', config.server_address, 'at', config.port)
+app.listen(config.port, function() {
+    logger.info('server is started at ', config.port)
 })
 
 // printing stack trace in case of error in development
 if (app.get('env') === 'development') {
-  app.use(function (err, req, res, next) {
-    res.status(err.status || 500)
-    res.render('error', {
-      message: err.message,
-      error: err
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500)
+        res.render('error', {
+            message: err.message,
+            error: err
+        })
     })
-  })
 }
 
 // printing stack trace in case of production
 // no stack trace is revealed to the user
 
-app.use(function (err, req, res, next) {
-  res.status(err.status || 500)
-  res.render('error', {
-    message: err.message,
-    error: {}
-  })
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500)
+    res.render('error', {
+        message: err.message,
+        error: {}
+    })
 })
 
 module.exports = app
