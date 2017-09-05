@@ -1,0 +1,11 @@
+form.image {
+    margin-top: 150px;
+}
+
+.form-group.nameInput.has-feedback:first-child {
+    margin-top: 50px;
+}
+
+.apply {
+    margin-top: 10px;
+}

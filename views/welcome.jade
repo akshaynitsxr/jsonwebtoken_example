@@ -1,0 +1,34 @@
+extends layout
+
+block head_scripts
+  script(src='/javascripts/welcome.js',type="text/javascript")
+  link(href="/stylesheets/welcome.css",rel="stylesheet")
+  script(type='text/javascript').
+    var datum =!{JSON.stringify([result])}
+
+block content
+  center
+    h4.control-label By default some value is set in original_object and patch
+  .form-horizontal
+    .form-group.nameInput.has-feedback
+      label.control-label.col-sm-2(for='original_object') Original Object
+      .col-sm-9
+        input#original_object.form-control(type='text', name='original_object', placeholder='Enter any json value', required)
+    .form-group.nameInput.has-feedback
+      label.control-label.col-sm-2(for='patch') Json Patch
+      .col-sm-9
+        input#patch.form-control(type='text', name='patch', placeholder='Enter any json patch', required)
+      .col-md-2.col-md-offset-5.apply
+        button.jsonpatcher.btn.btn-default(type='button') Click Me!
+    .form-group
+      label.control-label.col-sm-2(for='url') Result
+      .col-sm-9
+        input#result.form-control(type='text', name='url', placeholder='result') 
+
+  form.form-horizontal.image(action="/image",method='GET')
+    .form-group.nameInput.has-feedback
+      label.control-label.col-sm-2(for='url') Image URL
+      .col-sm-9
+        input#url.form-control(type='text', name='url', placeholder='Enter any image url', required)
+    .col-sm-offset-2.col-sm-10
+      button.btn.btn-default(type='submit') Submit
